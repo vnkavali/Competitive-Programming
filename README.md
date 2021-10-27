@@ -8,5 +8,6 @@ https://github.ecodesamsung.com/visnu-kavali/swexpert-problems
 
 ## [SPOJ](https://www.spoj.com)
 
+* [Largest Rectangle in a Histogram](https://www.spoj.com/problems/HISTOGRA/)
 * [Transform the Expression](https://www.spoj.com/problems/ONP/)
   * Reverse Polish Notation
