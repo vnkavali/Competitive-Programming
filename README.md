@@ -8,6 +8,8 @@ My solutions to problems from various websites
 
 ## [SPOJ](https://www.spoj.com)
 
+* [Ada and Queue](https://www.spoj.com/problems/ADAQUEUE/)
+  * Deque
 * [Largest Rectangle in a Histogram](https://www.spoj.com/problems/HISTOGRA/)
   * Stack
 * [Transform the Expression](https://www.spoj.com/problems/ONP/)
