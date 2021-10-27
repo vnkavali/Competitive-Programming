@@ -1,8 +1,9 @@
 /**
  * @file main.c
  * @author Vishnu Kavali (vn.kavali.korea@gmail.com)
- * @brief 
- * @version 0.1
+ * @brief In a histogram of length n, find the area of the largest rectangle with base on the x axis
+ * @version 0.2
+ * @details In O(n) time using stack
  * @date 2021-10-26
  * 
  * @copyright Copyright (c) 2021
@@ -12,12 +13,16 @@
 #include <stdio.h>
 #include <malloc.h>
 
-typedef struct Rect
+typedef struct
 {
     int h;
-    int w;
-    struct Rect *next;
+    int wstart;
 } Rectangle;
+
+#define MAX 100000
+
+Rectangle stack[MAX];
+int top;
 
 int main(void)
 {
@@ -30,72 +35,70 @@ int main(void)
             break;
 
         long long int Amax = 0;
-        Rectangle *top = NULL;
+        top = -1;
         for (int i = 0; i < n; i++)
         {
-            int h, w = 1;
+            int h;
             scanf("%d", &h);
 
-            int included = 0;
-            for (Rectangle *i = top; i != NULL; i = i->next)
+            if (h == 0)
             {
-                if (included)
+                for (int j = top; j >= 0; j--)
                 {
-                    i->w += 1;
-                    continue;
+                    long long int Aj = ((long long int)(stack[j].h) * (long long int)(i - stack[j].wstart));
+                    if (Aj > Amax)
+                        Amax = Aj;
                 }
 
-                if (i->h > h)
-                {
-                    long long int Ai = ((long long int)(i->h) * (long long int)(i->w));
-                    if (Ai > Amax)
-                        Amax = Ai;
+                top = -1;
+                continue;
+            }
 
-                    w = i->w + 1;
+            int cur_h_wstart = i;
+            for (int j = top; j >= 0; j--)
+            {
+                if (stack[j].h > h)
+                {
+                    long long int Aj = ((long long int)(stack[j].h) * (long long int)(i - stack[j].wstart));
+                    if (Aj > Amax)
+                        Amax = Aj;
+
+                    cur_h_wstart = stack[j].wstart;
                 }
-                else if (i->h == h)
+                else if (stack[j].h == h)
                 {
-                    i->w += 1;
+                    top = j;
 
-                    top = i;
-                    included = 1;
+                    cur_h_wstart = -1;
+                    break;
                 }
-                else if (h != 0)
+                else
                 {
-                    Rectangle *tmp = (Rectangle *)malloc(sizeof(Rectangle));
-                    tmp->h = h;
-                    tmp->w = w;
-                    tmp->next = i;
+                    stack[j + 1].h = h;
+                    stack[j + 1].wstart = cur_h_wstart;
 
-                    top = tmp;
-                    included = 1;
+                    top = j + 1;
 
-                    i->w += 1;
+                    cur_h_wstart = -1;
+                    break;
                 }
             }
 
-            if (included == 0)
+            if (cur_h_wstart != -1)
             {
-                if (h == 0)
-                    top = NULL;
-                else
-                {
-                    Rectangle *tmp = (Rectangle *)malloc(sizeof(Rectangle));
-                    tmp->h = h;
-                    tmp->w = w;
-                    tmp->next = NULL;
+                stack[0].h = h;
+                stack[0].wstart = cur_h_wstart;
 
-                    top = tmp;
-                }
+                top = 0;
             }
         }
 
-        for (Rectangle *i = top; i != NULL; i = i->next)
+        for (int j = top; j >= 0; j--)
         {
-            long long int Ai = ((long long int)(i->h) * (long long int)(i->w));
+            long long int Aj = ((long long int)(stack[j].h) * (long long int)(n - stack[j].wstart));
 
-            if (Ai > Amax)
-                Amax = Ai;
+            if (Aj > Amax)
+                Amax = Aj;
         }
 
         printf("%lld\n", Amax);
