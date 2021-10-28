@@ -2,7 +2,7 @@
  * @file AdaQueue.c
  * @author Vishnu Kavali (vn.kavali.korea@gmail.com)
  * @brief Implementation of deque
- * @version 0.1
+ * @version 0.1.1
  * @date 2021-10-27
  * 
  * @copyright Copyright (c) 2021
@@ -85,6 +85,9 @@ void push_front(Deque *Q, int n)
     Q->arr[Q->front] = n;
 }
 
+void (*pop[])(Deque *) = {pop_back, pop_front};
+void (*push[])(Deque *, int) = {push_back, push_front};
+
 Deque Q;
 
 int main(void)
@@ -106,19 +109,12 @@ int main(void)
         {
         case 'b':
         {
-            if (reversed)
-                pop_front(&Q);
-            else
-                pop_back(&Q);
-
+            pop[reversed](&Q);
             break;
         }
         case 'f':
         {
-            if (reversed)
-                pop_back(&Q);
-            else
-                pop_front(&Q);
+            pop[1 - reversed](&Q);
             break;
         }
         case 'r':
@@ -131,10 +127,7 @@ int main(void)
             int n;
             scanf("%d", &n);
 
-            if (reversed)
-                push_front(&Q, n);
-            else
-                push_back(&Q, n);
+            push[reversed](&Q, n);
             break;
         }
         case 't':
@@ -142,10 +135,7 @@ int main(void)
             int n;
             scanf("%d", &n);
 
-            if (reversed)
-                push_back(&Q, n);
-            else
-                push_front(&Q, n);
+            push[1 - reversed](&Q, n);
             break;
         }
         default:
