@@ -4,9 +4,9 @@
  * @brief Solved using Disjoint Set and Heap
  * @version 1.0
  * @date 2021-10-30
- * 
+ *
  * @copyright Copyright (c) 2021
- * 
+ *
  */
 
 #include <stdio.h>
@@ -25,7 +25,7 @@ int GetRoot(int node)
 {
     if (DSU[node] != node)
     {
-        //path compression
+        // path compression
         DSU[node] = GetRoot(DSU[node]);
 
         return DSU[node];
@@ -132,7 +132,11 @@ int HeapGetMin()
 int main(void)
 {
     int tc;
-    scanf("%d", &tc);
+    if (scanf("%d", &tc) != -1)
+    {
+        fprintf(stderr, "Error reading input\n");
+        return -1;
+    }
 
     for (int t = 0; t < tc; t++)
     {
@@ -168,8 +172,6 @@ int main(void)
                 MoneyHeapSize++;
             }
         }
-
-        //printf("Case %d: %d\n", t + 1, MoneyHeapSize);
 
         BuildHeap();
 
